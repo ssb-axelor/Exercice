@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+
+	<grid name="compte-grid" title="Liste des comptes comptables" model="com.axelor.gestion.db.Compte">
+		<field name="code" title="Code du compte"/>
+		<field name="libelle" title="Libellé"/>
+	</grid>
+	
+	<form name="compte-form" title="Compte comptable" model="com.axelor.gestion.db.Compte" onSave="action-compte-record-concatenate">
+		<panel >
+			<field name="code" title="Code du compte" onChange="action-compte-record-concatenate"/>
+			<field name="libelle" title="Libellé" onChange="action-compte-record-concatenate"/>
+			<field name="compte" title="Compte comptable"/>
+		</panel>
+		
+		<panel sidebar="true">
+			<field name="createdOn"/>
+			<field name="createdBy"/>
+			<field name="updatedOn"/>
+			<field name="updatedBy"/>
+		</panel>
+	</form>
+	
+	<action-record name="action-compte-record-concatenate" model="com.axelor.gestion.db.Compte">
+  		<field  name="compte" expr="eval:__this__.code+ &quot;- &quot; +__this__.libelle"/>
+  	</action-record>
+
+</object-views>

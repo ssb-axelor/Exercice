@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+
+ 	<calendar name="evenement-calendar-color-by-status" title="Événements" mode="month" colorBy="statusSelect" 
+    	eventStart="debutDateT" eventStop="finDateT" eventLength="1" model="com.axelor.gestion.db.Evenement">
+    	<field name="sujet" />
+ 	</calendar>
+
+	<grid name="evenement-grid" title="Liste des événements" model="com.axelor.gestion.db.Evenement" edit-icon="true">
+	<hilite background="danger" if="$moment(finDateT) &lt; $moment(todayDateTime) &amp;&amp; (statusSelect==1 || statusSelect==2) "/>
+  <!--hilite background="warning" if="statusSelect==4"/-->
+  <hilite background="success" if="$moment(finDateT) &lt; $moment(todayDateTime) &amp;&amp; statusSelect==3"/>
+		<field name="sujet" title="Sujet"/>
+		<field name="duree" title="Durée" widget="duration" x-big="true"/>
+		<field name="debutDateT"/>
+		<field name="finDateT"/>
+		<field name="statusSelect" title="Statut"/>
+		<field name="utilisateur"/>
+		<button name="start" title="Démarrer" readonlyIf="statusSelect!=1" icon="fa-play" onClick="action-evenement-record-status,save" />
+    	<button name="end" title="Terminer" readonlyIf="statusSelect!=2" icon="fa-fast-forward" onClick="action-evenement-record-status,save"/>
+    	<button name="postpone" title="Reporter"  readonlyIf="statusSelect!=2" icon="fa-arrow-right" onClick="action-evenement-record-status-reporter,save"/>
+    	<button name="annuler" title="Annuler"  readonlyIf="statusSelect==3 || statusSelect==4" icon="fa-ban" onClick="action-evenement-record-status-annuler,save"/>
+	</grid>		
+
+<form id="evenement-form" name="evenement-form" title="Evénement" model="com.axelor.gestion.db.Evenement" onSave="action-evenement-method-calculer-duree">
+  <toolbar>
+    <button name="start" title="Démarrer" hidden="true" showIf="statusSelect==1 &amp;&amp; id!=null" icon="fa-play" onClick="action-evenement-record-status" />
+    <button name="end" title="Terminer" hidden="true" showIf="statusSelect==2" icon="fa-fast-forward" onClick="action-evenement-record-status"/>
+    <button name="postpone" title="Reporter"  hidden="true" showIf="statusSelect==2" icon="fa-arrow-right" onClick="action-evenement-record-status-reporter"/>
+    <button name="annuler" title="Annuler"  hidden="true" showIf="statusSelect==2 || statusSelect==1 &amp;&amp; id!=null" icon="fa-ban" onClick="action-evenement-record-status-annuler"/>
+  </toolbar>
+  <panel title="Contenu">
+    <field name="sujet" colSpan="12"/>
+    <field name="contenu" widget="html" colSpan="12"/>
+  </panel>
+  <panel sidebar="true">
+    <field name="statusSelect" showTitle="true" widget="NavSelect"/>
+    <field name="debutDateT" onChange="save,action-evenement-validate-finDateT,action-evenement-validate-limiteDateT"/>
+    <field name="finDateT" onChange="save,action-evenement-validate-finDateT,action-evenement-validate-limiteDateT"/>
+    <field name="duree" widget="duration" x-big="true" readonly="true"/>
+    <field name="utilisateur"/>
+    <field name="limiteDateT" onChange="action-evenement-validate-finDateT,action-evenement-validate-limiteDateT"/>
+  </panel>
+  <panel sidebar="true" title="Associé à">
+     <field name="relatedTo1Select" shcolSpan="12" widget="RefSelect" x-related="relatedTo1SelectId" showTitle="false"/>
+     <field name="relatedTo2Select" showIf="relatedTo1Select != null" colSpan="12" widget="RefSelect" x-related="relatedTo2SelectId" showTitle="false"/>
+   </panel> 
+</form>
+
+  	
+  	<action-validate name="action-evenement-validate-finDateT">
+  	<error if="finDateT &lt; debutDateT &amp;&amp; finDateT!=null  &amp;&amp; debutDateT!=null" message="La date de fin doit être supérieure à la date de début"/>
+  	</action-validate>
+  	
+  	<action-validate name="action-evenement-validate-limiteDateT">
+  	<error if="limiteDateT &lt; finDateT &amp;&amp; finDateT !=null  &amp;&amp; limiteDateT !=null" message="La date limite doit être supérieure ou égale à la date de fin"/>
+  	</action-validate>
+  	
+  	<action-record name="action-evenement-record-status" model="com.axelor.gestion.db.Evenement">
+		<field if="statusSelect==1" name="statusSelect" expr="2"/>
+		<field if="statusSelect==2" name="statusSelect" expr="3"/>
+	</action-record>
+	
+  	<action-record name="action-evenement-record-status-reporter" model="com.axelor.gestion.db.Evenement">
+		<field name="statusSelect" expr="2"/>
+	</action-record>
+	
+	<action-record name="action-evenement-record-status-annuler" model="com.axelor.gestion.db.Evenement">
+		<field name="statusSelect" expr="4"/>
+	</action-record>
+	
+	<action-method name="action-evenement-method-calculer-duree">
+  		<call class="com.axelor.apps.gestion.web.EvenementController" method="calculerDuree"/>
+	</action-method>
+</object-views>

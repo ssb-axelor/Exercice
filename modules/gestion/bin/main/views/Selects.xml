@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+
+<!-- Nomenclature : * name : "interfaceName" + "fieldName" + ".select" -->
+
+<selection name="commande.status.select">
+	<option value="1">Brouillon</option>
+	<option value="2">Validé</option>
+	<option value="3">Facturé</option>
+</selection>
+
+<selection name="facture.status.select">
+	<option value="1">Brouillon</option>
+	<option value="2">Validé</option>
+</selection>
+
+<selection name="evenement.status.select">
+	<option value="1">Non Démarré</option>
+	<option value="2">En Cours</option>
+	<option value="3">Terminé</option>
+	<option value="4">Annulé</option>
+</selection>
+
+<selection name="evenement.related.to.select">
+  <option value="com.axelor.gestion.db.Client">Contact</option>
+  <option value="com.axelor.gestion.db.Produit">Produit</option>
+</selection>
+
+</object-views>

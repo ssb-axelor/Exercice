@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+
+	<grid name="facture-grid" title="Liste des Factures" model="com.axelor.gestion.db.Facture">
+		<field name="dateFacture" title= "Date de la facture"/>
+		<field name="nom" title= "Nom du client"/>
+		<field name="factureHT" title="Total HT" readonly="true"/>
+		<field name="factureTTC" title="Total TTC" readonly="true"/>
+		<field name="statusSelect" title="Statut"/>
+	</grid>
+
+	<form name="facture-form" title="Facture" model="com.axelor.gestion.db.Facture" onNew="action-facture-record-default-date" >
+		<panel>
+		<field name="statusSelect" showTitle="true" colSpan="12" widget="NavSelect"/>
+			<field name="dateFacture" title= "Date de la facture"/>
+			<field name="nom" title= "Nom du client" readonlyIf="statusSelect!=1"/>
+		</panel>
+		
+		<panel title="détails de la facture" colSpan="12" itemSpan="12" readonlyIf="statusSelect!=1">
+			<field name="produits"/>
+		</panel>
+		
+		<panel>
+			<field name="factureHT" title="Total HT" readonly="true"/>
+			<field name="factureTTC" title="Total TTC" readonly="true"/>
+			<button name="calcul" css="btninfo" title="Calculer" hidden="true" showIf="statusSelect==1" onClick="save,action-facture-method-calcul" />
+		</panel>
+		<panel sidebar="true">
+			<button name="valide" title="Valider" css="btn-info" hidden="true" showIf="statusSelect==1" onClick="action-facture-record-status,save,action-facture-method-calcul"/>
+			<button name="ecriture" title="Générer Écriture Comptable" hidden="true" showIf="statusSelect==2 &amp;&amp; !ecritureGeneree" onClick="save,action-facture-method-generer-ecriture,action-facture-record-ecriture-generee"/>
+			<field name="createdOn"/>
+			<field name="createdBy"/>
+			<field name="updatedOn"/>
+			<field name="updatedBy"/>
+		</panel>
+	</form>
+	
+	<action-record name="action-facture-record-default-date" model="com.axelor.gestion.db.Facture">
+		<field name="dateFacture" expr="eval:__date__"/>
+	</action-record>
+	
+	<action-record name="action-facture-record-status" model="com.axelor.gestion.db.Facture">
+		<field if="statusSelect==1" name="statusSelect" expr="2"/>
+	</action-record>
+	
+	
+	<!-- calcul des totaux par l'action record -->
+	<!-- <action-record name="action-facture-record-calcul" model="com.axelor.gestion.db.Facture">
+  		<field  name="factureHT" expr="eval:__this__.produits.prixHT.collect().sum()"/>
+  		<field  name="factureTTC" expr="eval:__this__.produits.prixTTC.collect().sum()"/>
+ 	 </action-record> -->
+  
+  	<action-record name="action-facture-record-ecriture-generee" model="com.axelor.gestion.db.Facture">
+  		<field  name="ecritureGeneree" expr="true"/>
+  	</action-record>
+  
+    <action-method name="action-facture-method-calcul">
+  		<call class="com.axelor.apps.gestion.web.FactureController" method="calculer"/>
+	</action-method>
+    
+  <action-method name="action-facture-method-generer-ecriture">
+  <call class="com.axelor.apps.gestion.web.FactureController" method="genererEcriture"/>
+	</action-method>
+
+</object-views>

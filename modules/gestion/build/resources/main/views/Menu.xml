@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+
+	<menuitem name="menu-gestion" title="Gestion des commandes"  />
+	
+	<menuitem name="menu-gestion-dashboard" parent="menu-gestion"  title="Tableau de bord" order="1" />	
+		
+	<menuitem name="menu-gestion-dashboard-all" parent="menu-gestion-dashboard"  
+		title="Tableau de bord"  
+		action="gestion.dashboard-all" />	
+		
+	<action-view name="gestion.dashboard-all" title="Tableau de bord">
+		<view type="dashboard" name="gestion.dashboard.view.1" />	 
+	</action-view>
+	
+	<menuitem name="menu-gestion-dashboard-user" parent="menu-gestion-dashboard"  
+		title="Mon Tableau de bord"  
+		action="gestion.dashboard.user" />
+		
+	<action-view name="gestion.dashboard.user" title="Mon Tableau de bord" model="com.axelor.gestion.db.Evenement">
+		<view type="dashboard" name="gestion.dashboard.view.2" />	 
+	</action-view>
+	
+	<menuitem name="menu-gestion-calendar-user" parent="menu-gestion-dashboard"  
+		title="Mon Calendrier"  
+		action="gestion.calendar.user" />
+		
+	<action-view name="gestion.calendar.user" title="Mon Calendrier" model="com.axelor.gestion.db.Evenement">
+		<view type="calendar" name="evenement-calendar-color-by-status"/>
+	 	<domain>self.utilisateur =:__user__</domain> 
+	</action-view>
+	
+	<menuitem name="menu-gestion-all" parent="menu-gestion" order="3"
+    	title="Clients"
+    	action="client.all"/>
+
+	<action-view name="client.all" title="Clients" model="com.axelor.gestion.db.Client">
+    	<view type="grid" name="client-grid"/>
+	    <view type="form" name="client-form"/>
+	</action-view>
+
+	<menuitem name="menu-commande-all" parent="menu-gestion" order="4"
+    	title="Commandes"
+    	action="commande.all"/>
+
+	<action-view name="commande.all" title="Commandes" model="com.axelor.gestion.db.Commande">
+    	<view type="grid" name="commande-grid"/>
+	    <view type="form" name="commande-form"/>
+	</action-view>
+	
+	<menuitem name="menu-facture-all" parent="menu-gestion" order="5"
+    	title="Factures"
+    	action="facture.all"/>
+
+	<action-view name="facture.all" title="Factures" model="com.axelor.gestion.db.Facture">
+    	<view type="grid" name="facture-grid"/>
+	    <view type="form" name="facture-form"/>
+	</action-view>
+	
+	<menuitem name="menu-produit-all" parent="menu-gestion" order="8"
+    	title="Produits"
+    	action="produit.all"/>
+
+	<action-view name="produit.all" title="Produits" model="com.axelor.gestion.db.Produit">
+    	<view type="grid" name="produit-grid"/>
+	    <view type="form" name="produit-form"/>
+	</action-view>
+	
+	<menuitem name="menu-categorie-all" parent="menu-gestion" order="9"
+    	title="Catégories de produits"
+    	action="categorieProduit.all"/>
+
+	<action-view name="categorieProduit.all" title="Catégories de produits" model="com.axelor.gestion.db.FamilleProduit">
+    	<view type="grid" name="FamilleProduit-grid"/>
+	    <view type="form" name="FamilleProduit-from"/>
+	</action-view>
+	
+	<menuitem name="menu-compte-all" parent="menu-gestion" order="7"
+    	title="Comptes comptables"
+    	action="compte.all"/>
+
+	<action-view name="compte.all" title="Comptes comptables" model="com.axelor.gestion.db.Compte">
+    	<view type="grid" name="compte-grid"/>
+	    <view type="form" name="compte-form"/>
+	</action-view>
+	
+	<menuitem name="menu-ecriture-all" parent="menu-gestion" order="6"
+    	title="Écritures comptables"
+    	action="ecriture.all"/>
+
+	<action-view name="ecriture.all" title="Écritures comptables" model="com.axelor.gestion.db.Ecriture">
+    	<view type="grid" name="ecriture-grid"/>
+	    <view type="form" name="ecriture-form"/>
+	</action-view>
+	
+	<menuitem name="menu-evenement-all" parent="menu-gestion" title="Événements" order="2"/>
+
+	<menuitem name="menu-evenements" parent="menu-evenement-all" order="10"
+    	title="Événements"
+    	action="evenements"/>
+    	
+	<action-view name="evenements" title="Événements" model="com.axelor.gestion.db.Evenement">
+    	<view type="grid" name="evenement-grid"/>
+	    <view type="form" name="evenement-form"/>
+	    <view type="calendar" name="evenement-calendar-color-by-status"/>
+	</action-view>
+
+	<menuitem name="menu-evenement-calendrier" parent="menu-evenement-all" order="11"
+    	title="Calendrier"
+    	action="evenement.calendrier"/>
+    	
+    <action-view name="evenement.calendrier" title="Calendrier" model="com.axelor.gestion.db.Evenement">
+	    <view type="calendar" name="evenement-calendar-color-by-status"/>
+	</action-view>
+	
+	<menuitem name="menu-evenement-jour" parent="menu-evenement-all" order="12"
+    	title="Événements du jour"
+    	action="evenement.jour"/>
+    	
+    	
+    <action-view name="evenement.jour" title="Événements du jour" model="com.axelor.gestion.db.Evenement">
+	    <view type="grid" name="evenement-grid"/>
+	    <view type="form" name="evenement-form"/>
+	    <domain>self.debutDateT &lt;= :today AND self.finDateT &gt;= :today</domain>
+		<context name="today" expr="eval:__datetime__"/>
+	</action-view>
+	
+	<menuitem name="menu-evenement-jour-user" parent="menu-evenement-all" order="13"
+    	title="Mes événements du jour"
+    	action="evenement.jour.user"/>
+    	
+    	
+    <action-view name="evenement.jour.user" title="Mes événements du jour" model="com.axelor.gestion.db.Evenement">
+	    <view type="grid" name="evenement-grid"/>
+	    <view type="form" name="evenement-form"/>
+	    <domain>self.utilisateur =:__user__ AND self.debutDateT &lt;= :today AND self.finDateT &gt;= :today</domain>
+	    <context name="today" expr="eval:__datetime__"/>
+	    
+	</action-view>
+</object-views>

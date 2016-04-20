@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+
+  <grid name="lignefacture-grid" title="Produits vendus" model="com.axelor.gestion.db.LigneFacture">
+    <field name="produit" />
+    <field name="compte" title="Compte comptable"/>
+    <field name="price" title="Prix unitaire"/>
+     <field name="quantite" title="quantité"/>
+    <field name="prixHT" title="Sous Total HT"/>
+    <field name="taux" title="T.V.A"/>
+    <field name="prixTTC" title="Sous Total TTC"/>
+   
+  </grid>
+
+  <form name="lignefacture-form" title="Produits vendus" model="com.axelor.gestion.db.LigneFacture">
+    <panel>
+      	<field name="produit" canEdit="false" 
+      			onChange="action-ligne-facture-record-default,action-ligne-facture-record-calculHT,action-ligne-facture-record-calculTTC" 
+      			onCreate="action-ligne-facture-record-default,action-ligne-facture-record-calculHT,action-ligne-facture-record-calculTTC"/>
+   		<field name="price" title="Prix unitaire"
+   				onChange="action-ligne-facture-record-calculHT,action-ligne-facture-record-calculTTC"
+      			onCreate="action-ligne-facture-record-calculHT,action-ligne-facture-record-calculTTC"/>
+   		<field name="compte" title="Compte comptable"/>
+       	<field name="quantite" title="quantité"
+       			onChange="action-ligne-facture-record-calculHT,action-ligne-facture-record-calculTTC"
+      			onCreate="action-ligne-facture-record-calculHT,action-ligne-facture-record-calculTTC"/>
+    	<field name="prixHT" title="Sous Total HT" readonly="true"/>
+    	<field name="taux" title="T.V.A" onChange="action-ligne-facture-record-calculTTC" onCreate="action-ligne-facture-record-calculHT"/>
+    	<field name="prixTTC" title="Sous Total TTC" readonly="true"/>
+    </panel>
+  </form>
+  <action-record name="action-ligne-facture-record-default" model="com.axelor.gestion.db.LigneFacture">
+		<field  name="price" expr="eval:__this__.produit.price"/>
+		<field  name="compte" expr="eval:__this__.produit.compte.compte"/>
+  </action-record>
+ 
+  
+   <action-record name="action-ligne-facture-record-calculHT" model="com.axelor.gestion.db.LigneFacture">
+		<field  name="prixHT" expr="eval:__this__.price*__this__.quantite"/>
+  </action-record>
+  <action-record name="action-ligne-facture-record-calculTTC" model="com.axelor.gestion.db.LigneFacture">
+  	<field  name="prixTTC" expr="eval:(1+__this__.taux/100)*__this__.price*__this__.quantite"/>
+  </action-record>
+  
+<!--   <action-validate name="action-ligne-facture-validate">
+		<error message="Compte comptable non inséré!" if="compte==null"/>
+   </action-validate> -->
+  
+  
+</object-views>

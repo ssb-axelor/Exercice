@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_4.0.xsd">
+
+  <module name="gestion" package="com.axelor.gestion.db"/>
+
+  
+  <entity name="Client" sequential="true" cachable="true">
+  	<!-- <many-to-one name="title" ref="Title"/>        -->                             
+  	<string name="firstName" required="true" />                                
+  	<string name="lastName" required="true" namecolumn="true" />
+
+  	<date name="dateOfBirth"/>
+
+  	<string name="email" required="true" unique="true" max="100" />
+  	<string name="phone" max="20" massUpdate="true"/>
+  	<string name="notes" title="About me" large="true" />
+
+ <!--  <one-to-many name="addresses" ref="Address" mappedBy="contact"/>           
+
+  <finder-method name="findByName" using="fullName" />                       
+  <finder-method name="findByEmail" using="email" /> -->
+</entity>
+  
+</domain-models>

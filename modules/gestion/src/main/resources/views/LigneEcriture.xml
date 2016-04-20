@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+
+  <grid name="ligneecriture-grid" title="Lignes d'écriture" model="com.axelor.gestion.db.LigneEcriture">
+    <field name="compte"/>
+    <field name="debit" title="Débit"/>
+    <field name="credit" title="Crédit"/>
+    
+  </grid>
+
+  <form name="lignecriture-form" title="Ecriture comptable" model="com.axelor.gestion.db.LigneEcriture">
+    <panel>
+    	<field name="compte"/>                    
+    	<field name="debit" title="Débit"/>
+    	<field name="credit" title="Crédit"/>
+    </panel>
+  </form>
+
+  
+   <action-record name="action-ligne-ecriture-record-compte-comptable" model="com.axelor.gestion.db.LigneEcriture">
+		<field  name="compte" expr="eval:__this__.compte.code + &quot; &quot; +__this__.compte.libelle"/>
+  </action-record>
+</object-views>

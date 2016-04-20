@@ -1,0 +1,39 @@
+buildscript {
+	apply from: "gradle/adk.gradle"
+	dependencies {
+		classpath adkPlugins()
+	}
+}
+
+apply plugin: "axelor-app"
+
+application {
+
+	name "Axelor"
+	title "Gestion de commandes"
+
+	version "1.0.0"
+
+	// ADK version required
+	adkVersion "~4.0.0"
+
+	// module dependencies
+	 module "modules:gestion"
+}
+
+allprojects {
+
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
+
+	license {
+		ext.product = "project"
+		ext.owner = "My Company"
+		ext.website = "http://my-company.com"
+	}
+}
+
+tomcat {
+	httpPort = project.properties.get("http.port", 8080) as Integer
+	stopPort = 9451
+}

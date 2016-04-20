@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_4.0.xsd">
+
+  <module name="gestion" package="com.axelor.gestion.db"/>
+
+  
+  <entity name="Commande" sequential="true" cachable="true">
+  	<many-to-one name="nom" ref="com.axelor.gestion.db.Client" required="true"/>
+  	<date name="dateCommande" required="true"/>  
+  	<date name="datePrevFacture" required="true"/>
+  	<one-to-many name="produits" ref="LigneCommande" mappedBy="commande"/>
+  	<decimal name="commandeHT" precision="20" scale="4" min="0.0"/>
+  	<decimal name="commandeTTC" precision="20" scale="4" min="0.0"/>   
+  	<integer name="statusSelect" title="Statut" selection="commande.status.select" readonly="true" default="1"/>
+  	<boolean name="factureGeneree" default="false"/>
+
+
+</entity>
+  
+</domain-models>

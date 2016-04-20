@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+
+  <grid name="lignecommande-grid" title="Produits commandés" model="com.axelor.gestion.db.LigneCommande">
+    <field name="produit" canEdit="false"/>
+    <field name="price" title="Prix unitaire"/>
+    <field name="quantity" title="quantité"/>
+    <field name="priceHT" title="Sous Total HT"/>
+    <field name="taux" title="T.V.A"/>
+    <field name="priceTTC" title="Sous Total TTC"/>
+    
+  </grid>
+
+  <form name="lignecommande-form" title="Produits commandés" model="com.axelor.gestion.db.LigneCommande">
+    <panel>
+      	<field name="produit" canEdit="false" 
+      			onChange="action-ligne-commande-record-default-price, action-ligne-commande-record-calculHT,action-ligne-commande-record-calculTTC"/>
+      	<field name="price" title="Prix unitaire" 
+      			onChange="action-ligne-commande-record-calculHT,action-ligne-commande-record-calculTTC"/>
+    	<field name="quantity" title="quantité" 
+    			onChange="action-ligne-commande-record-calculHT,action-ligne-commande-record-calculTTC"/>
+    	<field name="priceHT" title="Sous Total HT" readonly="true"/>
+    	<field name="taux" title="T.V.A (%)" onChange="action-ligne-commande-record-calculTTC"/>
+    	<field name="priceTTC" title="Sous Total TTC" readonly="true"/>
+    </panel>
+  </form>
+  <action-record name="action-ligne-commande-record-default-price" model="com.axelor.gestion.db.LigneCommande">
+		<field  name="price" expr="eval:__this__.produit.price"/>
+  </action-record>
+  
+   <action-record name="action-ligne-commande-record-calculHT" model="com.axelor.gestion.db.LigneCommande">
+		<field  name="priceHT" expr="eval:__this__.price*__this__.quantity"/>
+  </action-record>
+  <action-record name="action-ligne-commande-record-calculTTC" model="com.axelor.gestion.db.LigneCommande">
+  	<field  name="priceTTC" expr="eval:(1+__this__.taux/100)*__this__.price*__this__.quantity"/>
+  </action-record>
+</object-views>

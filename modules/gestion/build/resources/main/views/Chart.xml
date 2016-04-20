@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+		
+	<chart name="chart.gestion.ventes.category" title="Nombre de ventes par catégorie de produits">
+	    <dataset type="sql">
+	    <![CDATA[
+			SELECT
+				SUM(_lignecommande.quantity) AS _quantites,
+				_famille.libelle_categorie as _libellecategorie
+			FROM
+				gestion_ligne_commande AS _lignecommande,
+				gestion_famille_produit as _famille,
+				gestion_produit as _produit	,
+				gestion_commande AS _commande
+			WHERE
+				_lignecommande.commande= _commande.id
+				AND
+				_lignecommande.produit = _produit.id
+				AND
+				_famille.id = _produit.categorie
+				AND
+				_commande.status_select != 1
+			GROUP BY
+				_libellecategorie
+			ORDER BY
+				_quantites
+	    ]]>
+	    
+	    </dataset>
+	    <category key="_libellecategorie" type="text" title="Catégorie"/>
+		<series key="_quantites"  type="bar" title="Quantités vendues" />
+	</chart>
+	
+	
+	<chart name="chart.gestion.ventes.produit.mois" title="Répartition des ventes par produit pour un mois donné">
+		<search-fields> 	        
+		    <field type="date" name="fromDateT" x-required="true" title="Date de départ" />
+		     <field type="date" name="toDateT" x-required="true" title="Date de fin" />
+		</search-fields>
+		<dataset type="sql">
+		    <![CDATA[
+			SELECT
+				SUM(_lignecommande.priceht) AS _ventes,
+				DATE_PART('month',_commande.date_commande) AS _mois,
+				_produit.product_name as _libelleproduit
+			FROM
+				gestion_ligne_commande AS _lignecommande,
+				gestion_commande AS _commande,
+				gestion_produit as _produit	
+			WHERE
+				_lignecommande.commande= _commande.id
+				AND
+				_lignecommande.produit= _produit.id
+				AND
+				_commande.status_select != 1
+				AND 
+				 _commande.date_commande BETWEEN (cast(:fromDateT as TIMESTAMP) AT TIME ZONE 'UTC') AND (cast(:toDateT as TIMESTAMP) AT TIME ZONE 'UTC')
+			GROUP BY
+				_mois,_libelleproduit
+			ORDER BY
+				_mois
+			  ]]>
+	    </dataset>
+	    <category key="_libelleproduit" type="text" title="Produits"/>
+	    <series key="_ventes" type="bar" title="Ventes"/>
+	</chart>
+
+	<!-- <chart name="chart.gestion.balance.comptable" title="Balance comptable">
+	    <dataset type="sql">
+	    <![CDATA[
+			SELECT
+				SUM(_lignefacture.prixht) AS _montant,
+				_lignefacture.compte as _libellecompte
+			FROM
+				gestion_ligne_facture AS _lignefacture,
+				gestion_facture as _facture
+			WHERE
+				_lignefacture.facture = _facture.id
+				AND
+				_facture.status_select != 1
+			GROUP BY
+				_libellecompte
+			ORDER BY
+				_montant
+	    ]]>
+	    
+	    </dataset>
+	    <category key="_libellecompte" type="text" title="Compte comptable"/>
+		<series key="_montant"  type="bar" title="Montant" />
+	</chart>	 -->
+	
+	<chart name="chart.gestion.balance.comptable" title="Balance comptable">
+	    <dataset type="jpql">
+	    <![CDATA[
+			SELECT
+				SUM(self.prixHT) AS _montant,
+				self.compte AS _libellecompte
+			FROM
+				LigneFacture self,
+				Facture fact
+			WHERE 
+				fact.id= self.facture
+			AND
+				fact.statusSelect !=1
+			GROUP BY
+				self.compte
+	    ]]>
+	    
+	    </dataset>
+	    <category key="_libellecompte" type="text" title="Compte comptable"/>
+		<series key="_montant"  type="bar" title="Montant" />
+	</chart>	
+	
+</object-views>

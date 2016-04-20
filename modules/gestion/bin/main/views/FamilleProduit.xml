@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+
+	<grid name="FamilleProduit-grid" title="Liste des catégories de produits" model="com.axelor.gestion.db.FamilleProduit">
+		<field name="codeCategorie"/>
+		<field name="libelleCategorie"/>
+	</grid>
+	
+	<form name="FamilleProduit-form" title="Catégorie de produits" model="com.axelor.gestion.db.FamilleProduit">
+		<panel >
+			<field name="codeCategorie"/>
+			<field name="libelleCategorie"/>
+		</panel>
+		
+		<panel sidebar="true">
+			<field name="createdOn"/>
+			<field name="createdBy"/>
+			<field name="updatedOn"/>
+			<field name="updatedBy"/>
+		</panel>
+	</form>
+
+</object-views>

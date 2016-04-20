@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+
+	<grid name="ecriture-grid" title="Liste des Écritures comptables" model="com.axelor.gestion.db.Ecriture">
+		<field name="dateOperation" title="Date de l'opération comptable"/>
+		<field name="referencePiece" title= "Référence de la pièce"/>
+	</grid>
+
+	<form name="ecriture-form" title="Écriture comptable" model="com.axelor.gestion.db.Ecriture"> 
+		<panel>
+			<field name="dateOperation" title="Date de l'opération comptable"/>
+			<field name="referencePiece" title="Référence de la pièce"/>
+		</panel>
+		
+		<panel title="détails de l'opération" itemSpan="12" >
+			<field name="ecritures"/>
+		</panel>
+	</form>
+	
+</object-views>

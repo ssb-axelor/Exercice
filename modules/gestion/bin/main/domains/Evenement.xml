@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_4.0.xsd">
+
+  <module name="gestion" package="com.axelor.gestion.db"/>
+
+  
+  <entity name="Evenement" sequential="true">
+  	<string name="sujet" required="true"/>  
+  	<string name="contenu"/>
+  	<datetime name="debutDateT" title="Date de début" required="true"/>
+  	<datetime name="finDateT" title="Date de fin" required="true"/>
+  	<long name="duree" title="Durée (hh:mm)"/>
+  	<integer name="statusSelect" title="Statut" selection="evenement.status.select" readonly="true" default="1"/>
+  	<many-to-one name="utilisateur" ref="com.axelor.auth.db.User" title="Assigné à"/>
+  	<datetime name="limiteDateT" title="Date limite" required="true"/>
+  	<string name="relatedTo1Select" title="Associé à" selection="evenement.related.to.select"/>
+  	<integer name="relatedTo1SelectId"/>
+  	<string name="relatedTo2Select" title="Associé à" selection="evenement.related.to.select"/>
+  	<integer name="relatedTo2SelectId"/>
+  
+ </entity>
+  
+</domain-models>

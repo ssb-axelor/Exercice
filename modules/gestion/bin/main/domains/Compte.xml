@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_4.0.xsd">
+
+  <module name="gestion" package="com.axelor.gestion.db"/>
+
+  
+  <entity name="Compte" sequential="true" cachable="true">
+  	<string name="code" required="true" />                                  
+  	<string name="libelle"  required="true"/> 
+  	<string name="compte" namecolumn="true" readonly="true"/>   
+  	<finder-method name="findByLibelle" using="libelle"/>                 
+</entity>
+  
+</domain-models>

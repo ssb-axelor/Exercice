@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+	
+	<dashboard name="gestion.dashboard.view.1" title="Commandes">
+		<dashlet action="dashlet.commande.facturer" height="250" />
+		<dashlet action="dashlet.facture.valider" height="250" />
+		<dashlet action="dashlet.nbr.ventes.categorie" height="350" />
+		<dashlet action="dashlet.gestion.ventes.produit.mois" height="350" />
+		<dashlet action="dashlet.gestion.balance.comptable" height="350" />
+	</dashboard>
+	
+	<action-view name="dashlet.commande.facturer" title="Commandes à facturer" model="com.axelor.gestion.db.Commande">
+	  <view type="grid" name="dashlet.commande.facturer-liste"/>
+	  <view type="form" name="dashlet.commande.facturer-form"/>
+	  <domain>self.factureGeneree=false</domain>
+	</action-view>
+	
+	<action-view name="dashlet.facture.valider" title="Factures à valider" model="com.axelor.gestion.db.Facture">
+	  <view type="grid" name="dashlet.facture.valider-liste"/>
+	  <view type="form" name="dashlet.facture.valider-form"/>
+	  <domain>self.statusSelect=1</domain>
+	</action-view>
+	
+	<action-view name="dashlet.nbr.ventes.categorie" title="Nombre de ventes par catégorie de produits" model="com.axelor.gestion.db.Commande">
+	  <view type="chart" name="chart.gestion.ventes.category"/>
+	</action-view>
+	
+	<action-view name="dashlet.gestion.ventes.produit.mois" title="Répartition des ventes par produit pour un mois donné" model="com.axelor.gestion.db.Commande">
+	  <view type="chart" name="chart.gestion.ventes.produit.mois"/>
+	</action-view>
+	
+		<action-view name="dashlet.gestion.balance.comptable" title="Balance Comptable" model="com.axelor.gestion.db.Facture">
+	  <view type="chart" name="chart.gestion.balance.comptable"/>
+	</action-view>
+	
+	<dashboard name="gestion.dashboard.view.2" title="Mon Tableau de Bord">
+		<dashlet action="dashlet.evenement.jour.user" height="350" width="800"/>
+		
+	</dashboard>
+	
+	<action-view name="dashlet.evenement.jour.user" title="Mes événements du jour" model="com.axelor.gestion.db.Evenement">
+	 	<view type="grid" name="evenement-grid"/>
+	 	<view type="form" name="evenement-form"/>
+	 	<domain>self.utilisateur =:__user__ AND self.debutDateT &lt;= :today AND self.finDateT &gt;= :today</domain>
+	    <context name="today" expr="eval:__datetime__"/>
+	</action-view>
+</object-views>

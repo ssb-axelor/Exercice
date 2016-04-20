@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_4.0.xsd">
+
+  <module name="gestion" package="com.axelor.gestion.db"/>
+
+  <entity name="LigneFacture">
+    <many-to-one name="facture" ref="Facture" required="true"/>
+    <many-to-one name="produit" ref="Produit" required="true"/>
+    <string name="compte" required="true"/>
+    <decimal name="price" precision="20" scale="4" min="0.0"/>
+    <decimal name="prixHT" precision="20" scale="4" min="0.0"/>
+    <integer name="quantite" min="1" required="true"/>
+    <decimal name="taux" precision="6" scale="4" min="0.0"/>
+    <decimal name="prixTTC" precision="20" scale="4" min="0.0"/>
+    
+
+  </entity>
+
+</domain-models>

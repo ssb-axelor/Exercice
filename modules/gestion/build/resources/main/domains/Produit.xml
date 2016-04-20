@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_4.0.xsd">
+
+ <module name="gestion" package="com.axelor.gestion.db"/>
+
+  
+  <entity name="Produit" sequential="true" cachable="true">
+    <string name="productName" required="true" namecolumn="true"/>                                
+  	<decimal name="price" precision="8" scale="2" required="true"/>                     
+	<many-to-one name="compte" ref="com.axelor.gestion.db.Compte" required="true"/>
+	<many-to-one name="categorie" ref="com.axelor.gestion.db.FamilleProduit" required="true"/>
+
+ <!--  <one-to-many name="addresses" ref="Address" mappedBy="contact"/>           
+
+  <finder-method name="findByName" using="fullName" />                       
+  <finder-method name="findByEmail" using="email" /> -->
+</entity>
+  
+</domain-models>

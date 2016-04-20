@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_4.0.xsd">
+	
+	<grid name="commande-grid" title="Liste des commandes" model="com.axelor.gestion.db.Commande">
+	<toolbar>
+    	<button name="factuerCommandeRetard" title="Facturer les commandes en retard" onClick="action-commande-method-facture-retard"/>
+  	</toolbar>
+  	<hilite if="$moment(datePrevFacture) &lt; $moment(todayDate) &amp;&amp; statusSelect!=3" color="danger"/>
+		<field name="dateCommande" title= "Date de la commande"/>
+		<field name="nom" title= "Nom du client"/>
+		<field name="datePrevFacture" title= "Date prévisionnelle de la facture"/>
+		<field name="commandeHT" title="Total HT" readonly="true"/>
+		<field name="commandeTTC" title="Total TTC" readonly="true"/>
+		<field name="statusSelect"/>
+	</grid>
+
+	<form name="commande-form" title="Commande" model="com.axelor.gestion.db.Commande" onNew="action-commande-record-default-date"> 
+		<panel>
+			<field name="statusSelect" showTitle="true" colSpan="12" widget="NavSelect"/>
+			<field name="dateCommande" title= "Date de la commande" readonlyIf="statusSelect!=1"/>
+			<field name="nom" title= "Nom du client" readonlyIf="statusSelect!=1"/>
+			<field name="datePrevFacture" title= "Date prévisionnelle de la facture"/>
+		</panel>
+		
+		<panel title="détails de la commande" itemSpan="12" readonlyIf="statusSelect!=1">
+			<field name="produits"/>
+		</panel>
+		
+		<panel>
+			<field name="commandeHT" title="Total HT" readonly="true"/>
+			<field name="commandeTTC" title="Total TTC" readonly="true"/>
+			<button name="calcul" css="btn-info" title="Calculer" hidden="true" showIf="statusSelect==1" onClick="save,action-commande-record-calcul"/>
+		</panel>
+		<panel sidebar="true">
+			<button name="valide" css="btn-info" title="Valider" hidden="true" showIf="statusSelect==1" onClick="save,action-commande-record-status,action-commande-record-calcul"/>
+			<button name="facture" title="Facturer" hidden="true" showIf="statusSelect==2" onClick="save,action-commande-record-status,action-commande-method-generer-facture,action-commande-record-facture-generee" />
+			<field name="createdOn"/>
+			<field name="createdBy"/>
+			<field name="updatedOn"/>
+			<field name="updatedBy"/>
+		</panel>
+	</form>
+	
+
+	<action-record name="action-commande-record-status" model="com.axelor.gestion.db.Commande">
+		<field if="statusSelect==1" name="statusSelect" expr="2"/>
+		<field if="statusSelect==2" name="statusSelect" expr="3"/>
+	</action-record>
+	
+	<action-record name="action-commande-record-default-date" model="com.axelor.gestion.db.Commande">
+		<field name="dateCommande" expr="eval:__date__"/>
+	</action-record>
+	
+	<action-record name="action-commande-record-calcul" model="com.axelor.gestion.db.Commande">
+  		<field  name="commandeHT" expr="eval:__this__.produits.priceHT.collect().sum()"/>
+  		<field  name="commandeTTC" expr="eval:__this__.produits.priceTTC.collect().sum()"/>
+  	</action-record>
+  	
+  	<action-record name="action-commande-record-facture-generee" model="com.axelor.gestion.db.Commande">
+  		<field  name="factureGeneree" expr="true"/>
+  	</action-record>
+  
+  	<action-method name="action-commande-method-generer-facture">
+  		<call class="com.axelor.apps.gestion.web.CommandeController" method="genererFacture"/>
+	</action-method>
+
+	<action-method name="action-commande-method-facture-retard">
+  		<call class="com.axelor.apps.gestion.web.CommandeController" method="facturerCommandesRetard"/>
+	</action-method>
+
+</object-views>
